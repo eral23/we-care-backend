@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2+BUgOx6BFkPH1E0rzYgQWtsHfJokeAAp4+fOPFg2kRlPQR4IM8G2Kv7WYxwG2dxH2yDhaqUA/mg2sSaDUEH4Q==",
+  "dgSpecHash": "nHs9v4khCjfFzVPJ/mZ+38Tkt12/qId491Ee2nmHpCxXHkJ/4ijoJfElnCEXmzfXlhG/+bjG7F+uaxp522CLuw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Brandon\\source\\repos\\WeCare\\WeCare.csproj",
+  "projectFilePath": "C:\\Users\\Brandon\\Documents\\GitHub\\we-care-backend\\WeCare\\WeCare.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Brandon\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\Brandon\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
