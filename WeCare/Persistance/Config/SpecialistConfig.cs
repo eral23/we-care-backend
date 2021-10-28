@@ -15,6 +15,8 @@ namespace WeCare.Persistance.Config
             entityBuilder.Property(x => x.SpecialistName).IsRequired();
             entityBuilder.Property(x => x.SpecialistLastname).IsRequired();
             entityBuilder.Property(x => x.SpecialistEmail).IsRequired();
+            entityBuilder.Property(x => x.SpecialistArea).IsRequired();
+            entityBuilder.Property(x => x.SpecialistTuitionNumber).IsRequired();
         }
     }
 }

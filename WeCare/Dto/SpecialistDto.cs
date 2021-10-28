@@ -11,6 +11,8 @@ namespace WeCare.Dto
         public string SpecialistName { get; set; }
         public string SpecialistLastname { get; set; }
         public string SpecialistEmail { get; set; }
+        public string SpecialistArea { get; set; }
+        public string SpecialistTuitionNumber { get; set; }
         public List<PatientDto> Patients { get; set; }
     }
     public class SpecialistCreateDto
@@ -18,6 +20,8 @@ namespace WeCare.Dto
         public string SpecialistName { get; set; }
         public string SpecialistLastname { get; set; }
         public string SpecialistEmail { get; set; }
+        public string SpecialistArea { get; set; }
+        public string SpecialistTuitionNumber { get; set; }
     }
     public class SpecialistUpdateDto
     {
@@ -29,5 +33,7 @@ namespace WeCare.Dto
         public string SpecialistName { get; set; }
         public string SpecialistLastname { get; set; }
         public string SpecialistEmail { get; set; }
+        public string SpecialistArea { get; set; }
+        public string SpecialistTuitionNumber { get; set; }
     }
 }

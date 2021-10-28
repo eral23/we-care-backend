@@ -23,7 +23,6 @@ namespace WeCare.Persistance
             new PatientConfig(builder.Entity<Patient>());
             new SpecialistConfig(builder.Entity<Specialist>());
             new EventConfig(builder.Entity<Event>());
-
         }
     }
 }
