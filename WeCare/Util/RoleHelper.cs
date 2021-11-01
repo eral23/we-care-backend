@@ -7,7 +7,7 @@ namespace WeCare.Util
 {
     public class RoleHelper
     {
-        public const string Pacient = "PACIENT";
+        public const string Patient = "PATIENT";
         public const string Specialist = "SPECIALIST";
         public const string Admin = "ADMIN";
     }

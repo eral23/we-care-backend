@@ -17,6 +17,15 @@ namespace WeCare.Persistance.Config
             entityBuilder.Property(x => x.SpecialistEmail).IsRequired();
             entityBuilder.Property(x => x.SpecialistArea).IsRequired();
             entityBuilder.Property(x => x.SpecialistTuitionNumber).IsRequired();
+            entityBuilder.HasData(new Specialist
+            {
+                SpecialistId = 1,
+                SpecialistName = "Unassigned",
+                SpecialistLastname = "Unassigned",
+                SpecialistArea = "Unassigned",
+                SpecialistEmail = "Unassigned",
+                SpecialistTuitionNumber = "Unassigned"
+            });
         }
     }
 }
