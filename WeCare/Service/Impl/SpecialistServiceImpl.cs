@@ -19,7 +19,7 @@ namespace WeCare.Service.Impl
 
         public SpecialistServiceImpl(ApplicationDbContext context, IMapper mapper)
         {
-            pid = 2;
+            pid = 0;
             pContext = context;
             pMapper = mapper;
         }
