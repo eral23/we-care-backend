@@ -50,5 +50,14 @@ namespace WeCare.Controllers
             pEventService.Create(evento);
             return Ok();
         }
+
+        [HttpPost("simple")]
+        public ActionResult CreateSimple(EventSimpleCreateDto evento)
+        {
+            pEventService.CreateSimple(evento);
+            return Ok();
+        }
+
+
     }
 }

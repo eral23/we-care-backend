@@ -25,8 +25,11 @@ namespace WeCare.Dto
         public int EventScore { get; set; }
         public string EventResult { get; set; }
         public string EventDetail { get; set; }
-        public string EventDate { get; set; }
-        public string EventTime { get; set; }
+        public int PatientId { get; set; }
+    }
+    public class EventSimpleCreateDto
+    {
+        public int EventScore { get; set; }
         public int PatientId { get; set; }
     }
     public class EventUpdateDto

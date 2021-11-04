@@ -70,5 +70,27 @@ namespace WeCare.Service.Impl
                 AsQueryable().Paged(page, take)
                 );
         }
+
+        public EventDto CreateSimple(EventSimpleCreateDto model)
+        {
+            Patient patient = pContext.Patients.Single(x => x.PatientId == model.PatientId);
+            var entry = new Event
+            {
+                EventName = DateTime.Now.ToString("yyyy-MM-dd") + " " +
+                            DateTime.Now.ToString("hh:mm:ss tt"),
+                EventDescription = "No description",
+                EventScore = model.EventScore,
+                EventResult = "Pending",
+                EventDetail = "No details",
+                EventDate = DateTime.Now.ToString("yyyy-MM-dd"),
+                EventTime = DateTime.Now.ToString("hh:mm:ss tt"),
+                PatientId = model.PatientId,
+                Patient = patient,
+                EventId = pid++
+            };
+            pContext.Events.Add(entry);
+            pContext.SaveChanges();
+            return pMapper.Map<EventDto>(entry);
+        }
     }
 }

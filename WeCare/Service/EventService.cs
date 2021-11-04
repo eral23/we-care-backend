@@ -14,5 +14,6 @@ namespace WeCare.Service
         DataCollection<EventSimpleDto> GetSimpleByPatientId(int patientId, int page, int take);
         EventDto GetById(int eventId);
         EventDto Create(EventCreateDto model);
+        EventDto CreateSimple(EventSimpleCreateDto model);
     }
 }
