@@ -15,5 +15,12 @@ namespace WeCare.Service
         EventDto GetById(int eventId);
         EventDto Create(EventCreateDto model);
         EventDto CreateSimple(EventSimpleCreateDto model);
+        // Eventos hoy
+        List<EventSimpleDto> GetTodayEvents(int patientId, int page, int take);
+        // Eventos de la semana, empezando desde el lunes siempre
+        List<(string, int)> GetWeeklyEvents(int patientId, int page, int take);
+        // Eventos del mes, empezando desde el día 1 siempre
+        List<EventSimpleDto> GetMonthlyEvents(int patientId, int page, int take);
+
     }
 }

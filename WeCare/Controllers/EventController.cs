@@ -58,6 +58,16 @@ namespace WeCare.Controllers
             return Ok();
         }
 
+        [HttpGet("today/{patient_id}")]
+        public ActionResult<List<EventSimpleDto>> GetTodayByPatienttId(int patient_id, int page = 1, int take = 20)
+        {
+            return pEventService.GetTodayEvents(patient_id, page, take);
+        }
 
+        [HttpGet("weekly/{patient_id}")]
+        public ActionResult<List<(string, int)>> GetWeeklyByPatienttId(int patient_id, int page = 1, int take = 20)
+        {
+            return pEventService.GetWeeklyEvents(patient_id, page, take);
+        }
     }
 }
