@@ -9,9 +9,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using WeCare.Dto;
 using WeCare.Entities.Identity;
+using WeCare.Service;
 
 namespace WeCare.Controllers
 {
@@ -22,12 +24,18 @@ namespace WeCare.Controllers
         private readonly UserManager<ApplicationUser> pUserManager;
         private readonly SignInManager<ApplicationUser> pSignInManager;
         private readonly IConfiguration pConfiguration;
+        //
+        private readonly SpecialistService pSpecialistService;
+        private readonly PatientService pPatientService;
         public IdentityController(UserManager<ApplicationUser> userManager, 
-            SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
+            SignInManager<ApplicationUser> signInManager, IConfiguration configuration,
+            SpecialistService specialistService, PatientService patientService)
         {
             pUserManager = userManager;
             pSignInManager = signInManager;
             pConfiguration = configuration;
+            pSpecialistService = specialistService;
+            pPatientService = patientService;
         }
         public string Index() { return ""; }
         [HttpPost("register_patient")]
@@ -46,6 +54,12 @@ namespace WeCare.Controllers
             {
                 throw new Exception("No se pudo crear el paciente");
             }
+            pPatientService.Create(new PatientCreateDto
+            {
+                PatientName = model.FirstName,
+                PatientLastname = model.LastName,
+                PatientEmail = model.Email
+            });
             return Ok();
         }
 
@@ -65,6 +79,14 @@ namespace WeCare.Controllers
             {
                 throw new Exception("No se pudo crear el especialista");
             }
+            pSpecialistService.Create(new SpecialistCreateDto
+            {
+                SpecialistName = model.FirstName,
+                SpecialistLastname = model.LastName,
+                SpecialistEmail = model.Email,
+                SpecialistArea = model.Area,
+                SpecialistTuitionNumber = model.TuitionNumber
+            });
             return Ok();
         }
 
@@ -120,7 +142,25 @@ namespace WeCare.Controllers
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var createdToken = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(createdToken);
+            var rtoken = tokenHandler.WriteToken(createdToken);
+            var payload = rtoken.Split('.')[1];
+            var jsonPayload = Encoding.UTF8.GetString(Decode(payload));
+            byte[] Decode(string input)
+            {
+                var output = input;
+                output = output.Replace('-', '+');
+                output = output.Replace('_', '/');
+                switch (output.Length % 4)
+                {
+                    case 0: break;
+                    case 2: output += "=="; break;
+                    case 3: output += "="; break; 
+                    default: throw new System.ArgumentOutOfRangeException("input", "Illegal base64url string!");
+                }
+                var converted = Convert.FromBase64String(output);
+                return converted;
+            }
+            return jsonPayload;
         }
     }
 }

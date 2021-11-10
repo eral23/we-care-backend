@@ -37,11 +37,11 @@ namespace WeCare.Controllers
             return pSpecialistService.GetById(id);
         }
 
-        [HttpPost]
-        public ActionResult Create(SpecialistCreateDto specialist)
-        {
-            pSpecialistService.Create(specialist);
-            return Ok();
-        }
+        //[HttpPost]
+        //public ActionResult Create(SpecialistCreateDto specialist)
+        //{
+        //    pSpecialistService.Create(specialist);
+        //    return Ok();
+        //}
     }
 }

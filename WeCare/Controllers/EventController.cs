@@ -44,12 +44,12 @@ namespace WeCare.Controllers
             return pEventService.GetById(id);
         }
 
-        [HttpPost]
-        public ActionResult Create(EventCreateDto evento) // Careful: "event" is a reserved word
-        {
-            pEventService.Create(evento);
-            return Ok();
-        }
+        //[HttpPost]
+        //public ActionResult Create(EventCreateDto evento) // Careful: "event" is a reserved word
+        //{
+        //    pEventService.Create(evento);
+        //    return Ok();
+        //}
 
         [HttpPost("simple")]
         public ActionResult CreateSimple(EventSimpleCreateDto evento)
