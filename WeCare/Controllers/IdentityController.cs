@@ -29,7 +29,7 @@ namespace WeCare.Controllers
             pSignInManager = signInManager;
             pConfiguration = configuration;
         }
-        public string Index() { return ""; }
+        //public string Index() { return ""; }
         [HttpPost("register_patient")]
         public async Task<IActionResult> CreatePatient(ApplicationUserRegisterPatientDto model) {
             var user = new ApplicationUser

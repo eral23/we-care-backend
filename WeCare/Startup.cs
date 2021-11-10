@@ -15,6 +15,7 @@ using WeCare.Entities.Identity;
 using WeCare.Persistance;
 using WeCare.Service;
 using WeCare.Service.Impl;
+using Microsoft.OpenApi.Models;
 
 namespace WeCare
 {
@@ -40,8 +41,11 @@ namespace WeCare
 
             services.AddControllers();
             services.AddDbContext<ApplicationDbContext>(
-                opts => opts.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                opts => opts.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
                 );
+            //services.AddDbContext<ApplicationDbContext>(
+            //    opts => opts.UseNpgsql(Configuration.GetConnectionString("PostgreHerokuConnection"))
+            //    );
 
             services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.Configure<IdentityOptions>(options =>
@@ -60,6 +64,27 @@ namespace WeCare
             services.AddTransient<SpecialistService, SpecialistServiceImpl>();
             services.AddTransient<PatientService, PatientServiceImpl>();
             services.AddTransient<EventService, EventServiceImpl>();
+            AddSwagger(services);
+        }
+        private void AddSwagger(IServiceCollection services)
+        {
+            services.AddSwaggerGen(options =>
+            {
+                var groupName = "v1";
+
+                options.SwaggerDoc(groupName, new OpenApiInfo
+                {
+                    Title = $"WeCare {groupName}",
+                    Version = groupName,
+                    Description = "WeCare API",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "WeCare Company",
+                        Email = string.Empty,
+                        Url = new Uri("https://wecare.com/"),
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,7 +94,11 @@ namespace WeCare
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WeCare API V1");
+            });
             app.UseRouting();
             app.UseCors("Cors");
 
