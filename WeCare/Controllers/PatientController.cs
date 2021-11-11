@@ -48,11 +48,11 @@ namespace WeCare.Controllers
             return pPatientService.GetByEmail(email);
         }
 
-        [HttpPost]
-        public ActionResult Create(PatientCreateDto patient)
-        {
-            pPatientService.Create(patient);
-            return Ok();
-        }
+        //[HttpPost]
+        //public ActionResult Create(PatientCreateDto patient)
+        //{
+        //    pPatientService.Create(patient);
+        //    return Ok();
+        //}
     }
 }

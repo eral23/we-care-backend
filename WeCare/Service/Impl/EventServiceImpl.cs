@@ -106,11 +106,16 @@ namespace WeCare.Service.Impl
         {
             // Primero, obtener el dia de inicio de semana y calcular desde alli un rango
             var SoW = getStartWeek(DateTime.Now.ToString());
-            //var EoW = getEndWeek(SoW);
-            var EoW = DateTime.Now;
+            var EoW = getEndWeek(SoW);
+            //var EoW = DateTime.Now;
             List<EventSimpleDto> fool = new List<EventSimpleDto>();
             var lis = DataEvents(patientId, page, take);
-            foreach (var ele in lis.Items) if (checkWeek(ele.EventDate, SoW, EoW)) fool.Add(ele);
+            foreach (var ele in lis.Items)
+            {
+                if (checkWeek(ele.EventDate, SoW, EoW)) {
+                    fool.Add(ele);
+                }
+            }
             List<(string, int)> dateproms = new List<(string, int)>();
             
             foreach (var dum in fool.Select(x => x.EventDate))
@@ -123,6 +128,7 @@ namespace WeCare.Service.Impl
                 dateproms.Add((dum,promday/count));
             }
             return dateproms.Distinct().ToList();
+            //return dateproms.Distinct().ToList();
         }
 
         public List<EventSimpleDto> GetMonthlyEvents(int patientId, int page, int take)
@@ -150,8 +156,8 @@ namespace WeCare.Service.Impl
                 if (DoW == 0) DoW = 7;
                 var tempdate = new DateTime();
                 var difDay = 0;
-                if (eDay.Day > DoW) difDay = 1 - DoW;
-                else difDay = DoW - 1;
+                if (eDay.Day > DoW) difDay = Math.Abs(1 - DoW);
+                else difDay = Math.Abs(DoW - 1);
                 tempdate = eDay.AddDays(-difDay);
                 startweek = new DateTime(tempdate.Year, tempdate.Month, tempdate.Day);
             }
@@ -165,7 +171,9 @@ namespace WeCare.Service.Impl
         private bool checkWeek(string EventDate, DateTime startWeek, DateTime endWeek)
         {
             var eDay = DateTime.Parse(EventDate);
-            if (eDay >= startWeek && eDay <= endWeek) return true;
+            if (eDay >= startWeek && eDay <= endWeek) { 
+                return true; 
+            }
             else return false;
         }
         //
