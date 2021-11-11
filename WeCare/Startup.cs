@@ -39,9 +39,11 @@ namespace WeCare
             });
 
             services.AddControllers();
-            services.AddDbContext<ApplicationDbContext>(
-                opts => opts.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
-                );
+            //services.AddDbContext<ApplicationDbContext>(
+            //    opts => opts.UseSqlServer(Configuration.GetConnectionString("BrandonConnection"))
+            //    );
+            services.AddDbContext<ApplicationDbContext>(opts =>
+            opts.UseNpgsql(Configuration.GetConnectionString("BrandonPostgre")));
 
             services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.Configure<IdentityOptions>(options =>
