@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,6 +63,27 @@ namespace WeCare
             services.AddTransient<SpecialistService, SpecialistServiceImpl>();
             services.AddTransient<PatientService, PatientServiceImpl>();
             services.AddTransient<EventService, EventServiceImpl>();
+            AddSwagger(services);
+        }
+
+        private void AddSwagger(IServiceCollection services)
+        {
+            services.AddSwaggerGen(opts =>
+            {
+                var groupName = "v1";
+                opts.SwaggerDoc(groupName, new OpenApiInfo
+                {
+                    Title = $"WeCare {groupName}",
+                    Version = groupName,
+                    Description = "WeCare API",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "WeCare Company",
+                        Email = string.Empty,
+                        Url = new Uri("https://wecare.com/")
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +93,12 @@ namespace WeCare
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WeCare API V1");
+            });
 
             app.UseRouting();
             app.UseCors("Cors");

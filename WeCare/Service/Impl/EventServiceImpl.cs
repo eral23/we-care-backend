@@ -185,6 +185,11 @@ namespace WeCare.Service.Impl
                 AsQueryable().Paged(page, take)
                 );
         }
+        private List<EventSimpleDto> WeekEvents(string EventDate, int page, int take)
+        {
+            // Aca es para sacar eventos de una semana, sera usado para lo del mes
+            throw new NotImplementedException();
+        }
         //private List<EventSimpleDto> GetDayEvents(int patientId, string EventDay)
         //{
         //    List<EventSimpleDto> fool = new List<EventSimpleDto>();
