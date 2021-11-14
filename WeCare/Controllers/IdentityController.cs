@@ -54,13 +54,13 @@ namespace WeCare.Controllers
             {
                 throw new Exception("No se pudo crear el paciente");
             }
-            pPatientService.Create(new PatientCreateDto
+            var dvl = pPatientService.Create(new PatientCreateDto
             {
                 PatientName = model.FirstName,
                 PatientLastname = model.LastName,
                 PatientEmail = model.Email
             });
-            return Ok();
+            return Ok(dvl);
         }
 
         [HttpPost("register_specialist")]
@@ -79,7 +79,7 @@ namespace WeCare.Controllers
             {
                 throw new Exception("No se pudo crear el especialista");
             }
-            pSpecialistService.Create(new SpecialistCreateDto
+            var dvl = pSpecialistService.Create(new SpecialistCreateDto
             {
                 SpecialistName = model.FirstName,
                 SpecialistLastname = model.LastName,
@@ -87,7 +87,7 @@ namespace WeCare.Controllers
                 SpecialistArea = model.Area,
                 SpecialistTuitionNumber = model.TuitionNumber
             });
-            return Ok();
+            return Ok(dvl);
         }
 
         [HttpPost("login")]
