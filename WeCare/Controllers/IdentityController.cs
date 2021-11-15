@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -114,7 +115,7 @@ namespace WeCare.Controllers
             
             return Ok(await GenerateToken(user));
         }
-        private async Task<string> GenerateToken(ApplicationUser user)
+        private async Task<JObject> GenerateToken(ApplicationUser user)
         {
             var secretKey = pConfiguration.GetValue<string>("SecretKey");
             var key = Encoding.ASCII.GetBytes(secretKey);
@@ -154,13 +155,14 @@ namespace WeCare.Controllers
                 {
                     case 0: break;
                     case 2: output += "=="; break;
-                    case 3: output += "="; break; 
+                    case 3: output += "="; break;
                     default: throw new System.ArgumentOutOfRangeException("input", "Illegal base64url string!");
                 }
                 var converted = Convert.FromBase64String(output);
                 return converted;
             }
-            return jsonPayload;
+            JObject json = JObject.Parse(jsonPayload);
+            return json;
         }
     }
 }

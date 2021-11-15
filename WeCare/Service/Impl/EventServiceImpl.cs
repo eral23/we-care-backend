@@ -33,7 +33,7 @@ namespace WeCare.Service.Impl
                 EventResult = model.EventResult,
                 EventDetail = model.EventDetail,
                 EventDate = DateTime.Now.ToString("yyyy-MM-dd"),
-                EventTime = DateTime.Now.ToString("hh:mm:ss tt"),
+                EventTime = DateTime.Now.ToString("hh:mm:ss"),
                 PatientId = model.PatientId,
                 Patient = patient,
                 EventId = pid++
@@ -131,9 +131,33 @@ namespace WeCare.Service.Impl
             //return dateproms.Distinct().ToList();
         }
 
-        public List<EventSimpleDto> GetMonthlyEvents(int patientId, int page, int take)
+        public List<(string, int)> GetMonthlyEvents(int patientId, int page, int take)
         {
-            throw new NotImplementedException();
+            List<(string, int)> weekproms = new List<(string, int)>();
+            var count = 0;
+            var evaluating = new DateTime(); 
+            var ids = new DateTime();
+            var fds = new DateTime();
+            var year = DateTime.Now.Year;
+            var mon = DateTime.Now.Month;
+            for (var tempdate = 1; tempdate <= DateTime.Now.Day; tempdate += 7)
+            {
+                count++;
+                evaluating = new DateTime(year, mon, tempdate);
+                if (tempdate == 1)
+                {
+                    ids = new DateTime(year, mon, tempdate);
+                    fds = getEndWeek(getStartWeek(evaluating.ToString()));
+                }
+                else
+                {
+                    ids = getStartWeek(evaluating.ToString());
+                    fds = getEndWeek(ids);
+                }
+                var dum = WeekEvents(patientId, ids, fds, page, take);
+                weekproms.Add(("Week " + count, dum));
+            }
+            return weekproms;
         }
 
         private bool checkDay(string EventDate, DateTime compare)
@@ -185,27 +209,54 @@ namespace WeCare.Service.Impl
                 AsQueryable().Paged(page, take)
                 );
         }
-        private List<EventSimpleDto> WeekEvents(string EventDate, int page, int take)
+        private List<EventSimpleDto> DataMonthly(int patientId, int page, int take)
         {
-            // Aca es para sacar eventos de una semana, sera usado para lo del mes
-            throw new NotImplementedException();
+            List<EventSimpleDto> fool = new List<EventSimpleDto>();
+            var lis = DataEvents(patientId, page, take);
+            foreach (var ele in lis.Items)
+            {
+                var eMon = DateTime.Parse(ele.EventDate);
+                if (eMon.Year == DateTime.Now.Year && eMon.Month == DateTime.Now.Month)
+                {
+                    fool.Add(ele);
+                }
+            }
+            return fool;
         }
-        //private List<EventSimpleDto> GetDayEvents(int patientId, string EventDay)
-        //{
-        //    List<EventSimpleDto> fool = new List<EventSimpleDto>();
-        //    var lis = pMapper.Map<DataCollection<EventSimpleDto>>(pContext.Events.
-        //        Where(x => x.PatientId == patientId).
-        //        OrderByDescending(x => x.EventId).
-        //        AsQueryable()
-        //        );
-        //    foreach (var ele in lis.Items)
-        //    {
-        //        if (checkDay(ele.EventDate, DateTime.Now))
-        //        {
-        //            fool.Add(ele);
-        //        }
-        //    }
-        //    return fool;
-        //}
+        private int WeekEvents(int patientId, DateTime StartWeek, DateTime EndWeek, int page, int take)
+        {
+            List<EventSimpleDto> foo = new List<EventSimpleDto>();
+            var loo = DataMonthly(patientId, page, take);
+            foreach (var ele in loo)
+            {
+                var eDay = DateTime.Parse(ele.EventDate);
+                if (eDay >= StartWeek && eDay <= EndWeek)
+                {
+                    foo.Add(ele);
+                }
+            }
+            if (foo.Count > 0)
+            {
+                List<(string, int)> dateproms = new List<(string, int)>();
+                foreach (var dum in foo.Select(x => x.EventDate))
+                {
+                    var promday = 0; var count = 0;
+                    foreach (var foli in foo)
+                    {
+                        if (foli.EventDate == dum) promday += foli.EventScore; count++;
+                    }
+                    dateproms.Add((dum, promday / count));
+                }
+                var promsem = 0; var countsem = 0;
+                foreach (var s in dateproms)
+                {
+                    countsem++;
+                    promsem += s.Item2;
+                }
+                return promsem / countsem;
+            }
+            else return 0;
+        }
     }
+
 }

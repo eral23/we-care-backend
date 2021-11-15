@@ -69,5 +69,10 @@ namespace WeCare.Controllers
         {
             return pEventService.GetWeeklyEvents(patient_id, page, take);
         }
+        [HttpGet("monthly/{patient_id}")]
+        public ActionResult<List<(string, int)>> GetMonthlyByPatienttId(int patient_id, int page = 1, int take = 20)
+        {
+            return pEventService.GetMonthlyEvents(patient_id, page, take);
+        }
     }
 }

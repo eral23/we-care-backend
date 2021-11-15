@@ -20,7 +20,7 @@ namespace WeCare.Service
         // Eventos de la semana, empezando desde el lunes siempre
         List<(string, int)> GetWeeklyEvents(int patientId, int page, int take);
         // Eventos del mes, empezando desde el día 1 siempre
-        List<EventSimpleDto> GetMonthlyEvents(int patientId, int page, int take);
+        List<(string, int)> GetMonthlyEvents(int patientId, int page, int take);
 
     }
 }
