@@ -13,6 +13,7 @@ namespace WeCare.Service
         DataCollection<SpecialistSimpleDto> GetAllSimple(int page, int take);
         SpecialistDto GetById(int specialistId);
         SpecialistDto Create(SpecialistCreateDto model);
+        SpecialistSimpleDto GetByEmail(string specialistEmail);
         // Change Status of relationship with patient: TBD
     }
 }

@@ -58,5 +58,11 @@ namespace WeCare.Service.Impl
             return pMapper.Map<SpecialistDto>(pContext.Specialists.
                 Single(x => x.SpecialistId == specialistId));
         }
+
+        public SpecialistSimpleDto GetByEmail(string specialistEmail)
+        {
+            return pMapper.Map<SpecialistSimpleDto>(pContext.Specialists.
+                Single(x => x.SpecialistEmail == specialistEmail));
+        }
     }
 }

@@ -36,7 +36,11 @@ namespace WeCare.Controllers
         {
             return pSpecialistService.GetById(id);
         }
-
+        [HttpGet("search/{email}")]
+        public ActionResult<SpecialistSimpleDto> GetByEmail(string email)
+        {
+            return pSpecialistService.GetByEmail(email);
+        }
         //[HttpPost]
         //public ActionResult Create(SpecialistCreateDto specialist)
         //{

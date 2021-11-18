@@ -24,23 +24,29 @@ namespace WeCare.Service.Impl
         }
         public EventDto Create(EventCreateDto model)
         {
-            Patient patient = pContext.Patients.Single(x => x.PatientId == model.PatientId);
-            var entry = new Event
+            //Patient patient = pContext.Patients.Single(x => x.PatientId == model.PatientId);
+            Patient patient = pContext.Patients.Find(model.PatientId);
+            if (patient != null)
             {
-                EventName = model.EventName,
-                EventDescription = model.EventDescription,
-                EventScore = model.EventScore,
-                EventResult = model.EventResult,
-                EventDetail = model.EventDetail,
-                EventDate = DateTime.Now.ToString("yyyy-MM-dd"),
-                EventTime = DateTime.Now.ToString("hh:mm:ss"),
-                PatientId = model.PatientId,
-                Patient = patient,
-                EventId = pid++
-            };
-            pContext.Events.Add(entry);
-            pContext.SaveChanges();
-            return pMapper.Map<EventDto>(entry);
+                // Testing
+                var entry = new Event
+                {
+                    EventName = model.EventName,
+                    EventDescription = model.EventDescription,
+                    EventScore = model.EventScore,
+                    EventResult = model.EventResult,
+                    EventDetail = model.EventDetail,
+                    EventDate = DateTime.Now.ToString("yyyy-MM-dd"),
+                    EventTime = DateTime.Now.ToString("hh:mm:ss"),
+                    PatientId = model.PatientId,
+                    Patient = patient,
+                    EventId = pid++
+                };
+                pContext.Events.Add(entry);
+                pContext.SaveChanges();
+                return pMapper.Map<EventDto>(entry);
+            }
+            else return new EventDto();
         }
 
         public DataCollection<EventDto> GetAll(int page, int take)
@@ -74,24 +80,28 @@ namespace WeCare.Service.Impl
 
         public EventDto CreateSimple(EventSimpleCreateDto model)
         {
-            Patient patient = pContext.Patients.Single(x => x.PatientId == model.PatientId);
-            var entry = new Event
+            Patient patient = pContext.Patients.Find(model.PatientId);
+            if (patient != null)
             {
-                EventName = DateTime.Now.ToString("yyyy-MM-dd") + " " +
+                var entry = new Event
+                {
+                    EventName = DateTime.Now.ToString("yyyy-MM-dd") + " " +
                             DateTime.Now.ToString("HH:mm:ss"),
-                EventDescription = "No description",
-                EventScore = model.EventScore,
-                EventResult = "Pending",
-                EventDetail = "No details",
-                EventDate = DateTime.Now.ToString("yyyy-MM-dd"),
-                EventTime = DateTime.Now.ToString("HH:mm:ss"),
-                PatientId = model.PatientId,
-                Patient = patient,
-                EventId = pid++
-            };
-            pContext.Events.Add(entry);
-            pContext.SaveChanges();
-            return pMapper.Map<EventDto>(entry);
+                    EventDescription = "No description",
+                    EventScore = model.EventScore,
+                    EventResult = "Pending",
+                    EventDetail = "No details",
+                    EventDate = DateTime.Now.ToString("yyyy-MM-dd"),
+                    EventTime = DateTime.Now.ToString("HH:mm:ss"),
+                    PatientId = model.PatientId,
+                    Patient = patient,
+                    EventId = pid++
+                };
+                pContext.Events.Add(entry);
+                pContext.SaveChanges();
+                return pMapper.Map<EventDto>(entry);
+            }
+            else return new EventDto();
         }
 
         public List<EventSimpleDto> GetTodayEvents(int patientId, int page, int take)

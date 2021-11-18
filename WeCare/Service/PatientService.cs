@@ -13,7 +13,7 @@ namespace WeCare.Service
         DataCollection<PatientSimpleDto> GetAllSimple(int page, int take);
         DataCollection<PatientSimpleDto> GetSimpleBySpecialistId(int specialistId, int page, int take);
         PatientDto GetById(int patientId);
-        PatientDto GetByEmail(string patientEmail);
+        PatientSimpleDto GetByEmail(string patientEmail);
         PatientDto Create(PatientCreateDto model);
     }
 }

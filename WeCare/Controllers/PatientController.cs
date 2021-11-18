@@ -43,7 +43,7 @@ namespace WeCare.Controllers
             return pPatientService.GetById(id);
         }
         [HttpGet("search/{email}")]
-        public ActionResult<PatientDto> GetByEmail(string email)
+        public ActionResult<PatientSimpleDto> GetByEmail(string email)
         {
             return pPatientService.GetByEmail(email);
         }

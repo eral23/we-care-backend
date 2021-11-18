@@ -47,15 +47,17 @@ namespace WeCare.Controllers
         [HttpPost]
         public ActionResult Create(EventCreateDto evento) // Careful: "event" is a reserved word
         {
-            pEventService.Create(evento);
-            return Ok();
+            var rs = pEventService.Create(evento);
+            if (rs.EventName != null) return Ok();
+            else return BadRequest();
         }
 
         [HttpPost("simple")]
         public ActionResult CreateSimple(EventSimpleCreateDto evento)
         {
-            pEventService.CreateSimple(evento);
-            return Ok();
+            var rs = pEventService.CreateSimple(evento);
+            if (rs.EventName != null) return Ok(rs);
+            else return BadRequest();
         }
 
         [HttpGet("today/{patient_id}")]

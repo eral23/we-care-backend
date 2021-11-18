@@ -52,9 +52,9 @@ namespace WeCare.Service.Impl
                 );
         }
 
-        public PatientDto GetByEmail(string patientEmail)
+        public PatientSimpleDto GetByEmail(string patientEmail)
         {
-            return pMapper.Map<PatientDto>(pContext.Patients.
+            return pMapper.Map<PatientSimpleDto>(pContext.Patients.
                 Single(x => x.PatientEmail == patientEmail));
         }
 
