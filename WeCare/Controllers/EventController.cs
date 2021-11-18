@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,16 +49,16 @@ namespace WeCare.Controllers
         public ActionResult Create(EventCreateDto evento) // Careful: "event" is a reserved word
         {
             var rs = pEventService.Create(evento);
-            if (rs.EventName != null) return Ok();
-            else return BadRequest();
+            if (rs.EventName != null) return Ok(JObject.Parse("{eventId:" + rs.EventId + "}"));
+            else return BadRequest(JObject.Parse("{eventId:" + rs.EventId + "}"));
         }
 
         [HttpPost("simple")]
         public ActionResult CreateSimple(EventSimpleCreateDto evento)
         {
             var rs = pEventService.CreateSimple(evento);
-            if (rs.EventName != null) return Ok(rs);
-            else return BadRequest();
+            if (rs.EventName != null) return Ok(JObject.Parse("{eventId:" + rs.EventId + "}"));
+            else return BadRequest(JObject.Parse("{eventId:" + rs.EventId + "}"));
         }
 
         [HttpGet("today/{patient_id}")]
