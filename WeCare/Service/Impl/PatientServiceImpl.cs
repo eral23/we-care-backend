@@ -29,8 +29,7 @@ namespace WeCare.Service.Impl
                 PatientName = model.PatientName,
                 PatientLastname = model.PatientLastname,
                 PatientEmail = model.PatientEmail,
-                SpecialistId = 1,
-                Specialist = pContext.Specialists.Single(x => x.SpecialistId == 1),
+                PatientLinked =  false,
                 PatientId = pid++
             };
             pContext.Patients.Add(entry);
@@ -40,7 +39,7 @@ namespace WeCare.Service.Impl
 
         public DataCollection<PatientDto> GetAll(int page, int take)
         {
-            return pMapper.Map<DataCollection<PatientDto>>(pContext.Patients.Include(x => x.Specialist).
+            return pMapper.Map<DataCollection<PatientDto>>(pContext.Patients.Include(x => x.Requisitions).
                 OrderByDescending(x => x.PatientId).AsQueryable().Paged(page, take)
                 );
         }
@@ -62,14 +61,6 @@ namespace WeCare.Service.Impl
         {
             return pMapper.Map<PatientDto>(pContext.Patients.
                 Single(x => x.PatientId == patientId));
-        }
-
-        public DataCollection<PatientSimpleDto> GetSimpleBySpecialistId(int specialistId, int page, int take)
-        {
-            return pMapper.Map<DataCollection<PatientSimpleDto>>(pContext.Patients.
-                Where(x => x.SpecialistId == specialistId).OrderByDescending(x => x.PatientId).
-                AsQueryable().Paged(page, take)
-                );
         }
     }
 }

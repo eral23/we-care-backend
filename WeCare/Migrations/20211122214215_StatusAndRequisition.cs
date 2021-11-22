@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace WeCare.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class StatusAndRequisition : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,6 +47,22 @@ namespace WeCare.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Patients",
+                columns: table => new
+                {
+                    PatientId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PatientName = table.Column<string>(type: "text", nullable: false),
+                    PatientLastname = table.Column<string>(type: "text", nullable: false),
+                    PatientEmail = table.Column<string>(type: "text", nullable: false),
+                    PatientLinked = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Patients", x => x.PatientId);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,28 +189,6 @@ namespace WeCare.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Patients",
-                columns: table => new
-                {
-                    PatientId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PatientName = table.Column<string>(type: "text", nullable: false),
-                    PatientLastname = table.Column<string>(type: "text", nullable: false),
-                    PatientEmail = table.Column<string>(type: "text", nullable: false),
-                    SpecialistId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Patients", x => x.PatientId);
-                    table.ForeignKey(
-                        name: "FK_Patients_Specialists_SpecialistId",
-                        column: x => x.SpecialistId,
-                        principalTable: "Specialists",
-                        principalColumn: "SpecialistId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Events",
                 columns: table => new
                 {
@@ -220,20 +214,66 @@ namespace WeCare.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "States",
+                columns: table => new
+                {
+                    StateId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    StateBPM = table.Column<int>(type: "integer", nullable: false),
+                    StateSystolicPressure = table.Column<int>(type: "integer", nullable: false),
+                    StateDiastolicPressure = table.Column<int>(type: "integer", nullable: false),
+                    StateDate = table.Column<string>(type: "text", nullable: false),
+                    StateTime = table.Column<string>(type: "text", nullable: false),
+                    PatientId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_States", x => x.StateId);
+                    table.ForeignKey(
+                        name: "FK_States_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "PatientId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Requisitions",
+                columns: table => new
+                {
+                    RequisitionId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RequisitionStatus = table.Column<string>(type: "text", nullable: false),
+                    PatientId = table.Column<int>(type: "integer", nullable: false),
+                    SpecialistId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Requisitions", x => x.RequisitionId);
+                    table.ForeignKey(
+                        name: "FK_Requisitions_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "PatientId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Requisitions_Specialists_SpecialistId",
+                        column: x => x.SpecialistId,
+                        principalTable: "Specialists",
+                        principalColumn: "SpecialistId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "cc92b22e-c4bb-4076-a16a-2ea23ad008fc", "b88d8494-b38f-4c4a-b906-fd70737bf4a5", "PATIENT", "PATIENT" },
-                    { "0908992d-31a3-41ba-8257-0593b75067a4", "811d073d-0577-4e5d-a8e9-7f16a3bffde9", "SPECIALIST", "SPECIALIST" },
-                    { "626d3777-7c88-4fbe-a8d8-13b9adcd2492", "52482aab-cbe1-4bb6-8d65-7a297c4ed11f", "ADMIN", "ADMIN" }
+                    { "af13bb33-debb-45d4-b786-fa2f87bf4114", "12e0b31a-39d3-4e10-915b-2bb93c7e553d", "PATIENT", "PATIENT" },
+                    { "ea50655d-f938-4d09-8539-4daa1cfaaf00", "6e9c175d-5010-4011-89b5-50bc98d4bc36", "SPECIALIST", "SPECIALIST" },
+                    { "ddd18c6e-fad8-4d37-bb0a-35e9d349b50d", "d08af901-aef0-4d84-9666-7311df261270", "ADMIN", "ADMIN" }
                 });
-
-            migrationBuilder.InsertData(
-                table: "Specialists",
-                columns: new[] { "SpecialistId", "SpecialistArea", "SpecialistEmail", "SpecialistLastname", "SpecialistName", "SpecialistTuitionNumber" },
-                values: new object[] { 1, "Unassigned", "Unassigned", "Unassigned", "Unassigned", "Unassigned" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -278,9 +318,19 @@ namespace WeCare.Migrations
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patients_SpecialistId",
-                table: "Patients",
+                name: "IX_Requisitions_PatientId",
+                table: "Requisitions",
+                column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requisitions_SpecialistId",
+                table: "Requisitions",
                 column: "SpecialistId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_States_PatientId",
+                table: "States",
+                column: "PatientId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -304,16 +354,22 @@ namespace WeCare.Migrations
                 name: "Events");
 
             migrationBuilder.DropTable(
+                name: "Requisitions");
+
+            migrationBuilder.DropTable(
+                name: "States");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Patients");
+                name: "Specialists");
 
             migrationBuilder.DropTable(
-                name: "Specialists");
+                name: "Patients");
         }
     }
 }

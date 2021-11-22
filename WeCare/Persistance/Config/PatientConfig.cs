@@ -15,7 +15,7 @@ namespace WeCare.Persistance.Config
             entityBuilder.Property(x => x.PatientName).IsRequired();
             entityBuilder.Property(x => x.PatientLastname).IsRequired();
             entityBuilder.Property(x => x.PatientEmail).IsRequired();
-            entityBuilder.HasOne(x => x.Specialist).WithMany(x => x.Patients).HasForeignKey(x => x.SpecialistId);
+            entityBuilder.Property(x => x.PatientLinked).IsRequired();
         }
     }
 }

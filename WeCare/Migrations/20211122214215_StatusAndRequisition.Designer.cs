@@ -10,8 +10,8 @@ using WeCare.Persistance;
 namespace WeCare.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211111211419_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211122214215_StatusAndRequisition")]
+    partial class StatusAndRequisition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -182,22 +182,22 @@ namespace WeCare.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cc92b22e-c4bb-4076-a16a-2ea23ad008fc",
-                            ConcurrencyStamp = "b88d8494-b38f-4c4a-b906-fd70737bf4a5",
+                            Id = "af13bb33-debb-45d4-b786-fa2f87bf4114",
+                            ConcurrencyStamp = "12e0b31a-39d3-4e10-915b-2bb93c7e553d",
                             Name = "PATIENT",
                             NormalizedName = "PATIENT"
                         },
                         new
                         {
-                            Id = "0908992d-31a3-41ba-8257-0593b75067a4",
-                            ConcurrencyStamp = "811d073d-0577-4e5d-a8e9-7f16a3bffde9",
+                            Id = "ea50655d-f938-4d09-8539-4daa1cfaaf00",
+                            ConcurrencyStamp = "6e9c175d-5010-4011-89b5-50bc98d4bc36",
                             Name = "SPECIALIST",
                             NormalizedName = "SPECIALIST"
                         },
                         new
                         {
-                            Id = "626d3777-7c88-4fbe-a8d8-13b9adcd2492",
-                            ConcurrencyStamp = "52482aab-cbe1-4bb6-8d65-7a297c4ed11f",
+                            Id = "ddd18c6e-fad8-4d37-bb0a-35e9d349b50d",
+                            ConcurrencyStamp = "d08af901-aef0-4d84-9666-7311df261270",
                             Name = "ADMIN",
                             NormalizedName = "ADMIN"
                         });
@@ -305,18 +305,42 @@ namespace WeCare.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("PatientLinked")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("PatientName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("PatientId");
+
+                    b.ToTable("Patients");
+                });
+
+            modelBuilder.Entity("WeCare.Entities.Requisition", b =>
+                {
+                    b.Property<int>("RequisitionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RequisitionStatus")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("SpecialistId")
                         .HasColumnType("integer");
 
-                    b.HasKey("PatientId");
+                    b.HasKey("RequisitionId");
+
+                    b.HasIndex("PatientId");
 
                     b.HasIndex("SpecialistId");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Requisitions");
                 });
 
             modelBuilder.Entity("WeCare.Entities.Specialist", b =>
@@ -349,17 +373,40 @@ namespace WeCare.Migrations
                     b.HasKey("SpecialistId");
 
                     b.ToTable("Specialists");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            SpecialistId = 1,
-                            SpecialistArea = "Unassigned",
-                            SpecialistEmail = "Unassigned",
-                            SpecialistLastname = "Unassigned",
-                            SpecialistName = "Unassigned",
-                            SpecialistTuitionNumber = "Unassigned"
-                        });
+            modelBuilder.Entity("WeCare.Entities.State", b =>
+                {
+                    b.Property<int>("StateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StateBPM")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("StateDate")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("StateDiastolicPressure")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StateSystolicPressure")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("StateTime")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("StateId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -428,15 +475,34 @@ namespace WeCare.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WeCare.Entities.Patient", b =>
+            modelBuilder.Entity("WeCare.Entities.Requisition", b =>
                 {
+                    b.HasOne("WeCare.Entities.Patient", "Patient")
+                        .WithMany("Requisitions")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WeCare.Entities.Specialist", "Specialist")
-                        .WithMany("Patients")
+                        .WithMany("Requisitions")
                         .HasForeignKey("SpecialistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Patient");
+
                     b.Navigation("Specialist");
+                });
+
+            modelBuilder.Entity("WeCare.Entities.State", b =>
+                {
+                    b.HasOne("WeCare.Entities.Patient", "Patient")
+                        .WithMany("States")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("WeCare.Entities.Identity.ApplicationRole", b =>
@@ -452,11 +518,15 @@ namespace WeCare.Migrations
             modelBuilder.Entity("WeCare.Entities.Patient", b =>
                 {
                     b.Navigation("Events");
+
+                    b.Navigation("Requisitions");
+
+                    b.Navigation("States");
                 });
 
             modelBuilder.Entity("WeCare.Entities.Specialist", b =>
                 {
-                    b.Navigation("Patients");
+                    b.Navigation("Requisitions");
                 });
 #pragma warning restore 612, 618
         }

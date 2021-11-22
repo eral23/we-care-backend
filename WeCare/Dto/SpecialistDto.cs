@@ -13,7 +13,7 @@ namespace WeCare.Dto
         public string SpecialistEmail { get; set; }
         public string SpecialistArea { get; set; }
         public string SpecialistTuitionNumber { get; set; }
-        public List<PatientDto> Patients { get; set; }
+        public List<RequisitionDto> Requisitions { get; set; }
     }
     public class SpecialistCreateDto
     {

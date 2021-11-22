@@ -11,8 +11,9 @@ namespace WeCare.Entities
         public string PatientName { get; set; }
         public string PatientLastname { get; set; }
         public string PatientEmail { get; set; }
-        public int SpecialistId { get; set; }
-        public Specialist Specialist { get; set; }
+        public bool PatientLinked {get; set;}
+        public List<Requisition> Requisitions { get; set; }
         public List<Event> Events { get; set; }
+        public List<State> States { get; set; }
     }
 }

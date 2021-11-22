@@ -34,7 +34,7 @@ namespace WeCare.Controllers
         }
 
         [HttpGet("simple/{patient_id}")]
-        public ActionResult<DataCollection<EventSimpleDto>> GetSimpleByPatienttId(int patient_id, int page = 1, int take = 20)
+        public ActionResult<DataCollection<EventSimpleDto>> GetSimpleByPatientId(int patient_id, int page = 1, int take = 20)
         {
             return pEventService.GetSimpleByPatientId(patient_id, page, take);
         }

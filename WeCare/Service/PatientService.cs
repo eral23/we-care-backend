@@ -11,7 +11,6 @@ namespace WeCare.Service
     {
         DataCollection<PatientDto> GetAll(int page, int take);
         DataCollection<PatientSimpleDto> GetAllSimple(int page, int take);
-        DataCollection<PatientSimpleDto> GetSimpleBySpecialistId(int specialistId, int page, int take);
         PatientDto GetById(int patientId);
         PatientSimpleDto GetByEmail(string patientEmail);
         PatientDto Create(PatientCreateDto model);

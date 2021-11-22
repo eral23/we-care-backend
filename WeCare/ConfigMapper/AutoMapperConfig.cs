@@ -31,6 +31,13 @@ namespace WeCare.ConfigMapper
             CreateMap<DataCollection<Event>, DataCollection<EventSimpleDto>>();
             CreateMap<List<EventSimpleDto>, DataCollection<EventSimpleDto>>();
 
+            CreateMap<State, StateDto>();
+            CreateMap<DataCollection<State>, DataCollection<StateDto>>();
+            CreateMap<List<State>, DataCollection<State>>();
+            CreateMap<State, StateSimpleDto>();
+            CreateMap<DataCollection<State>, DataCollection<StateSimpleDto>>();
+            CreateMap<List<StateSimpleDto>, DataCollection<StateSimpleDto>>();
+
             CreateMap<ApplicationUser, ApplicationUserDto>().ForMember(dest => dest.Roles,
                 opts => opts.MapFrom(src => src.UserRoles.Select(y => y.Role.Name).ToList()));
             CreateMap<DataCollection<Specialist>, DataCollection<SpecialistDto>>();

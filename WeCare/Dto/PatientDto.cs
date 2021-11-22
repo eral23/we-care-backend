@@ -11,8 +11,10 @@ namespace WeCare.Dto
         public string PatientName { get; set; }
         public string PatientLastname { get; set; }
         public string PatientEmail { get; set; }
-        public SpecialistDto Specialist { get; set; }
+        public bool PatientLinked { get; set; }
+        public List<RequisitionDto> Requisitions { get; set; }
         public List<EventDto> Events { get; set; }
+        public List<StateDto> States { get; set; }
     }
     
     public class PatientCreateDto
@@ -31,5 +33,6 @@ namespace WeCare.Dto
         public string PatientName { get; set; }
         public string PatientLastname { get; set; }
         public string PatientEmail { get; set; }
+        public bool PatientLinked { get; set; }
     }
 }

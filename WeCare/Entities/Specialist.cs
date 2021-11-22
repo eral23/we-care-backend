@@ -13,6 +13,6 @@ namespace WeCare.Entities
         public string SpecialistEmail { get; set; }
         public string SpecialistArea { get; set; }
         public string SpecialistTuitionNumber { get; set; }
-        public List<Patient> Patients { get; set; }
+        public List<Requisition> Requisitions { get; set; }
     }
 }

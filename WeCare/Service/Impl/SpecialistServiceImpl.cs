@@ -41,7 +41,7 @@ namespace WeCare.Service.Impl
 
         public DataCollection<SpecialistDto> GetAll(int page, int take)
         {
-            return pMapper.Map<DataCollection<SpecialistDto>>(pContext.Specialists.Include(x => x.Patients).
+            return pMapper.Map<DataCollection<SpecialistDto>>(pContext.Specialists.Include(x => x.Requisitions).
                 OrderByDescending(x => x.SpecialistId).AsQueryable().Paged(page,take)
                 );
         }

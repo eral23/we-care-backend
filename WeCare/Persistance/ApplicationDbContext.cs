@@ -28,14 +28,18 @@ namespace WeCare.Persistance
         }
         
         public DbSet<Patient> Patients { get; set; }
+        public DbSet<Requisition> Requisitions { get; set; }
         public DbSet<Specialist> Specialists { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<State> States { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             new PatientConfig(builder.Entity<Patient>());
+            new RequisitionConfig(builder.Entity<Requisition>());
             new SpecialistConfig(builder.Entity<Specialist>());
             new EventConfig(builder.Entity<Event>());
+            new StateConfig(builder.Entity<State>());
             new ApplicationUserConfig(builder.Entity<ApplicationUser>());
             new ApplicationRoleConfig(builder.Entity<ApplicationRole>());
         }

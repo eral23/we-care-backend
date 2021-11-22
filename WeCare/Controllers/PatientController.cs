@@ -31,12 +31,6 @@ namespace WeCare.Controllers
             return pPatientService.GetAllSimple(page, take);
         }
 
-        [HttpGet("simple/{specialist_id}")]
-        public ActionResult<DataCollection<PatientSimpleDto>> GetSimpleBySpecialistId(int specialist_id, int page = 1, int take = 20)
-        {
-            return pPatientService.GetSimpleBySpecialistId(specialist_id, page, take);
-        }
-
         [HttpGet("{id}")]
         public ActionResult<PatientDto> GetById(int id)
         {
