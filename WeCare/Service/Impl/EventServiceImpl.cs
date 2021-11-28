@@ -65,8 +65,13 @@ namespace WeCare.Service.Impl
 
         public EventDto GetById(int eventId)
         {
-            return pMapper.Map<EventDto>(pContext.Events.
-                Single(x => x.EventId == eventId));
+            var res = pContext.Events.Find(eventId);
+            if (res != null)
+            {
+                return pMapper.Map<EventDto>(pContext.Events.
+                    Single(x => x.EventId == eventId));
+            }
+            else return new EventDto();
         }
 
         public DataCollection<EventSimpleDto> GetSimpleByPatientId(int patientId, int page, int take)
@@ -108,21 +113,21 @@ namespace WeCare.Service.Impl
         {
             List<EventSimpleDto> fool = new List<EventSimpleDto>();
             var lis = DataEvents(patientId, page, take);
-            foreach (var ele in lis.Items) if (checkDay(ele.EventDate,DateTime.Now)) fool.Add(ele);
+            foreach (var ele in lis.Items) if (TimeHelper.checkDay(ele.EventDate,DateTime.Now)) fool.Add(ele);
             return fool;
         }
 
         public List<(string, int)> GetWeeklyEvents(int patientId, int page, int take)
         {
             // Primero, obtener el dia de inicio de semana y calcular desde alli un rango
-            var SoW = getStartWeek(DateTime.Now.ToString());
-            var EoW = getEndWeek(SoW);
+            var SoW = TimeHelper.getStartWeek(DateTime.Now.ToString());
+            var EoW = TimeHelper.getEndWeek(SoW);
             //var EoW = DateTime.Now;
             List<EventSimpleDto> fool = new List<EventSimpleDto>();
             var lis = DataEvents(patientId, page, take);
             foreach (var ele in lis.Items)
             {
-                if (checkWeek(ele.EventDate, SoW, EoW)) {
+                if (TimeHelper.checkWeek(ele.EventDate, SoW, EoW)) {
                     fool.Add(ele);
                 }
             }
@@ -157,58 +162,17 @@ namespace WeCare.Service.Impl
                 if (tempdate == 1)
                 {
                     ids = new DateTime(year, mon, tempdate);
-                    fds = getEndWeek(getStartWeek(evaluating.ToString()));
+                    fds = TimeHelper.getEndWeek(TimeHelper.getStartWeek(evaluating.ToString()));
                 }
                 else
                 {
-                    ids = getStartWeek(evaluating.ToString());
-                    fds = getEndWeek(ids);
+                    ids = TimeHelper.getStartWeek(evaluating.ToString());
+                    fds = TimeHelper.getEndWeek(ids);
                 }
                 var dum = WeekEvents(patientId, ids, fds, page, take);
                 weekproms.Add(("Week " + count, dum));
             }
             return weekproms;
-        }
-
-        private bool checkDay(string EventDate, DateTime compare)
-        {
-            var eDay = DateTime.Parse(EventDate);
-            if (eDay.Day == compare.Day && eDay.Month == compare.Month &&
-                eDay.Year == compare.Year) return true;
-            return false;
-        }
-        // Para sacar el inicio de semana
-        private DateTime getStartWeek(string EventDate)
-        {
-            var eDay = DateTime.Parse(EventDate);
-            var startweek = new DateTime();
-            if (eDay.DayOfWeek == DayOfWeek.Monday) 
-                startweek = new DateTime(eDay.Year,eDay.Month,eDay.Day);
-            else
-            {
-                var DoW = (int)eDay.DayOfWeek;
-                if (DoW == 0) DoW = 7;
-                var tempdate = new DateTime();
-                var difDay = 0;
-                if (eDay.Day > DoW) difDay = Math.Abs(1 - DoW);
-                else difDay = Math.Abs(DoW - 1);
-                tempdate = eDay.AddDays(-difDay);
-                startweek = new DateTime(tempdate.Year, tempdate.Month, tempdate.Day);
-            }
-            return startweek;
-        }
-        private DateTime getEndWeek(DateTime startWeek)
-        {
-            var endWeek = startWeek.AddDays(6);
-            return new DateTime(endWeek.Year, endWeek.Month, endWeek.Day, 23, 59, 59);
-        }
-        private bool checkWeek(string EventDate, DateTime startWeek, DateTime endWeek)
-        {
-            var eDay = DateTime.Parse(EventDate);
-            if (eDay >= startWeek && eDay <= endWeek) { 
-                return true; 
-            }
-            else return false;
         }
         //
         private DataCollection<EventSimpleDto> DataEvents(int patientId, int page, int take)

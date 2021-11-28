@@ -42,7 +42,9 @@ namespace WeCare.Controllers
         [HttpGet("{id}")]
         public ActionResult<EventDto> GetById(int id)
         {
-            return pEventService.GetById(id);
+            var res = pEventService.GetById(id);
+            if (res.EventId != 0) return res;
+            else return BadRequest(res);
         }
 
         [HttpPost]

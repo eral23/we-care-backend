@@ -16,5 +16,11 @@ namespace WeCare.Service
         StateDto Create(StateCreateDto model);
         StateDto CreateSimple(StateSimpleCreateDto model);
         // Metodos de filtrado
+        // Estados hoy
+        List<StateSimpleDto> GetTodayStates(int patientId, int page, int take);
+        // Estados de la semana, empezando desde el lunes siempre
+        List<(string, int, int, int)> GetWeeklyStates(int patientId, int page, int take);
+        // Estados del mes, empezando desde el día 1 siempre
+        List<(string, int, int, int)> GetMonthlyStates(int patientId, int page, int take);
     }
 }

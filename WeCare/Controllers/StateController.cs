@@ -41,7 +41,9 @@ namespace WeCare.Controllers
         [HttpGet("{id}")]
         public ActionResult<StateDto> GetById(int id)
         {
-            return pStateService.GetById(id);
+            var rs = pStateService.GetById(id);
+            if (rs.StateId != 0) return rs;
+            else return BadRequest(rs);
         }
 
         [HttpPost]
@@ -58,6 +60,22 @@ namespace WeCare.Controllers
             var rs = pStateService.CreateSimple(state);
             if (rs.StateId != 0) return Ok(JObject.Parse("{stateId:" + rs.StateId + "}"));
             else return BadRequest(JObject.Parse("{stateId:" + rs.StateId + "}"));
+        }
+        [HttpGet("today/{patient_id}")]
+        public ActionResult<List<StateSimpleDto>> GetTodayByPatienttId(int patient_id, int page = 1, int take = 20)
+        {
+            return pStateService.GetTodayStates(patient_id, page, take);
+        }
+
+        [HttpGet("weekly/{patient_id}")]
+        public ActionResult<List<(string, int, int, int)>> GetWeeklyByPatienttId(int patient_id, int page = 1, int take = 20)
+        {
+            return pStateService.GetWeeklyStates(patient_id, page, take);
+        }
+        [HttpGet("monthly/{patient_id}")]
+        public ActionResult<List<(string, int, int, int)>> GetMonthlyByPatienttId(int patient_id, int page = 1, int take = 20)
+        {
+            return pStateService.GetMonthlyStates(patient_id, page, take);
         }
     }
 }

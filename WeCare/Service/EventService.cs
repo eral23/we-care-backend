@@ -15,6 +15,7 @@ namespace WeCare.Service
         EventDto GetById(int eventId);
         EventDto Create(EventCreateDto model);
         EventDto CreateSimple(EventSimpleCreateDto model);
+        // Metodos de filtrado
         // Eventos hoy
         List<EventSimpleDto> GetTodayEvents(int patientId, int page, int take);
         // Eventos de la semana, empezando desde el lunes siempre

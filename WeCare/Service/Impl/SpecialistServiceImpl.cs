@@ -55,14 +55,24 @@ namespace WeCare.Service.Impl
 
         public SpecialistDto GetById(int specialistId)
         {
-            return pMapper.Map<SpecialistDto>(pContext.Specialists.
-                Single(x => x.SpecialistId == specialistId));
+            var res = pContext.Specialists.Find(specialistId);
+            if (res != null)
+            {
+                return pMapper.Map<SpecialistDto>(pContext.Specialists.
+                    Single(x => x.SpecialistId == specialistId));
+            }
+            else return new SpecialistDto();
         }
 
         public SpecialistSimpleDto GetByEmail(string specialistEmail)
         {
-            return pMapper.Map<SpecialistSimpleDto>(pContext.Specialists.
-                Single(x => x.SpecialistEmail == specialistEmail));
+            var res = pContext.Specialists.Where(x => x.SpecialistEmail == specialistEmail);
+            if (res != null)
+            {
+                return pMapper.Map<SpecialistSimpleDto>(pContext.Specialists.
+                    Single(x => x.SpecialistEmail == specialistEmail));
+            }
+            else return new SpecialistSimpleDto();
         }
     }
 }

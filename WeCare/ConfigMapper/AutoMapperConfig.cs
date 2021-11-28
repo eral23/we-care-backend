@@ -24,6 +24,11 @@ namespace WeCare.ConfigMapper
             CreateMap<Patient, PatientSimpleDto>();
             CreateMap<DataCollection<Patient>, DataCollection<PatientSimpleDto>>();
 
+            CreateMap<Requisition, RequisitionDto>();
+            CreateMap<DataCollection<Requisition>, DataCollection<RequisitionDto>>();
+            CreateMap<Requisition, RequisitionSimpleDto>();
+            CreateMap<DataCollection<Requisition>, DataCollection<RequisitionSimpleDto>>();
+
             CreateMap<Event, EventDto>();
             CreateMap<DataCollection<Event>, DataCollection<EventDto>>();
             CreateMap<List<Event>, DataCollection<Event>>();

@@ -53,14 +53,24 @@ namespace WeCare.Service.Impl
 
         public PatientSimpleDto GetByEmail(string patientEmail)
         {
-            return pMapper.Map<PatientSimpleDto>(pContext.Patients.
-                Single(x => x.PatientEmail == patientEmail));
+            var res = pContext.Patients.Where(x => x.PatientEmail == patientEmail);
+            if (res.Count() != 0)
+            {
+                return pMapper.Map<PatientSimpleDto>(pContext.Patients.
+                    Single(x => x.PatientEmail == patientEmail));
+            }
+            else return new PatientSimpleDto();
         }
 
         public PatientDto GetById(int patientId)
         {
-            return pMapper.Map<PatientDto>(pContext.Patients.
-                Single(x => x.PatientId == patientId));
+            var res = pContext.Patients.Find(patientId);
+            if (res != null)
+            {
+                return pMapper.Map<PatientDto>(pContext.Patients.
+                    Single(x => x.PatientId == patientId));
+            }
+            else return new PatientDto();
         }
     }
 }

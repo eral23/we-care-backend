@@ -65,6 +65,8 @@ namespace WeCare
             services.AddTransient<SpecialistService, SpecialistServiceImpl>();
             services.AddTransient<PatientService, PatientServiceImpl>();
             services.AddTransient<EventService, EventServiceImpl>();
+            services.AddTransient<StateService, StateServiceImpl>();
+            services.AddTransient<RequisitionService, RequisitionServiceImpl>();
             AddSwagger(services);
         }
 
