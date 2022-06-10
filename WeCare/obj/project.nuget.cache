@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "pqXUXJzUTNXPSl+EpSyDcciA90FSlCR+2o0eaZkW/xptSDEGbu4CnTiIROo2erzsAvC/0SJ/VoFlgrRBXhF9Yw==",
+  "dgSpecHash": "UAyYW82vXJSfE+dVhoLy7Q/bGGATYvXM7B8sYmNlrHKZUInXE83YeaEH1biwa3MmbTkRACdVs1rZKuAfS0ho9A==",
   "success": true,
   "projectFilePath": "C:\\Users\\WORKSTATION\\OneDrive\\Documentos\\we-care-backend\\WeCare\\WeCare.csproj",
   "expectedPackageFiles": [
@@ -126,7 +126,8 @@
     "C:\\Users\\WORKSTATION\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\WORKSTATION\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\WORKSTATION\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\WORKSTATION\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
+    "C:\\Users\\WORKSTATION\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
+    "C:\\Users\\WORKSTATION\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.25\\microsoft.netcore.app.host.win-x64.3.1.25.nupkg.sha512"
   ],
   "logs": []
 }
