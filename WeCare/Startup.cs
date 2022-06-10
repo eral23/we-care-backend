@@ -46,7 +46,7 @@ namespace WeCare
             //services.AddDbContext<ApplicationDbContext>(opts =>
             //opts.UseNpgsql(Configuration.GetConnectionString("BrandonPostgre")));
             services.AddDbContext<ApplicationDbContext>(opts =>
-            opts.UseNpgsql(Configuration.GetConnectionString("HerokuPostgre")));
+            opts.UseNpgsql(Configuration.GetConnectionString("AWS")));
 
             services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.Configure<IdentityOptions>(options =>
